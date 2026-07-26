@@ -5,6 +5,7 @@ import { members as membersData } from "../data/members";
 import { dailyReports as dailyReportsData } from "../data/dailyReports";
 import { visitReports as visitReportsData } from "../data/visitReports";
 import { schedules as schedulesData } from "../data/schedules";
+import { operationalRecaps } from "../data/operationalRecaps";
 import { useAdminData } from "../state/AdminDataContext";
 import type { DayName } from "../types";
 import { MAIN_ROUTES } from "../app/routes";
@@ -507,27 +508,27 @@ function DashboardPage({ day, setDay, navigate }: { day: string; setDay: (d:stri
     return () => window.removeEventListener("keydown", close);
   }, [showDayMenu]);
 
+  const recapRows = operationalRecaps.find(item=>item.day===day)?.rows ?? [];
+  const totalTargetMasuk = recapRows.reduce((total,item)=>total+item.target.incoming,0);
+  const totalTargetKeluar = recapRows.reduce((total,item)=>total+item.target.outgoing,0);
+  const totalSirkulasi = recapRows.reduce((total,item)=>total+item.currentCirculation,0);
+
   const summaryCards = [
     { label:"Total Anggota", value:"39", sub:"anggota aktif", icon:Users, page:"RekapAnggota" as RouteName },
     { label:"Total Target", value:"Rp123,5 jt", sub:"target nominal", icon:Target, page:"RekapTarget" as RouteName },
     { label:"Total Drop", value:"Rp91 jt", sub:"realisasi drop", icon:WalletCards, page:"RekapDrop" as RouteName },
     { label:"Total Storting", value:"Rp37,7 jt", sub:"realisasi storting", icon:CreditCard, page:"RekapStorting" as RouteName },
+    { label:"Target Keluar", value:fmtJt(totalTargetKeluar), sub:`rekap hari ${day}`, icon:Target, page:"RekapOperasional" as RouteName },
+    { label:"Target Masuk", value:fmtJt(totalTargetMasuk), sub:`rekap hari ${day}`, icon:Target, page:"RekapOperasional" as RouteName },
+    { label:"Sirkulasi", value:fmtJt(totalSirkulasi), sub:`sirkulasi hari ${day}`, icon:RefreshCw, page:"RekapOperasional" as RouteName },
   ];
 
   const dailyShortcuts = [
-    {label:"Tracking",hint:"Pantau lokasi",icon:MapPin,to:"TrackingMap" as RouteName},
-    {label:"Data Prospek",hint:"Pantau calon anggota",icon:ClipboardList,to:"ProspectList" as RouteName},
-    {label:"Data Anggota",hint:"Lihat anggota",icon:Users,to:"AnggotaList" as RouteName},
-    {label:"Laporan Harian",hint:"Data operasional",icon:FileText,to:"LaporanHarianList" as RouteName},
-    {label:"Laporan Kunjungan",hint:"Hasil kunjungan lapangan",icon:MapPin,to:"VisitReportList" as RouteName},
-    {label:"Rekap",hint:"Ringkasan lengkap",icon:ClipboardList,to:"RekapOperasional" as RouteName},
+    {label:"Foto Pencairan",hint:"Dokumentasi pencairan",icon:ImageIcon,to:"AnggotaList" as RouteName},
+    {label:"Laporan Tunai",hint:"Laporan transaksi tunai",icon:WalletCards,to:"LaporanHarianList" as RouteName},
+    {label:"Rekap Target",hint:"Ringkasan target marketing",icon:Target,to:"RekapTarget" as RouteName},
+    {label:"Foto Bukti Transfer",hint:"Dokumentasi transfer",icon:CreditCard,to:"LaporanHarianList" as RouteName},
   ];
-  const marketingActivities = [
-    { label:"Prospek Baru", value:prospectsData.filter(item=>item.day===day&&item.status==="Baru").length, suffix:"data", to:"ProspectList" as RouteName },
-    { label:"Kunjungan Hari Ini", value:visitReportsData.filter(item=>item.day===day).length, suffix:"laporan", to:"VisitReportList" as RouteName },
-    { label:"Menunggu Sinkronisasi", value:visitReportsData.filter(item=>item.day===day&&item.syncStatus==="Menunggu Sinkronisasi").length, suffix:"data", to:"VisitReportList" as RouteName },
-  ];
-
   return (
     <div className="max-w-full overflow-x-clip pb-20 lg:pb-8">
       {/* Summary cards */}
@@ -545,11 +546,6 @@ function DashboardPage({ day, setDay, navigate }: { day: string; setDay: (d:stri
             </button>
           ))}
         </div>
-      </div>
-
-      <div className="mt-7 px-4 sm:px-6 lg:px-8">
-        <div className="mb-3"><p className="text-[16px] font-semibold text-[#F3F5F7]">Aktivitas Pemasaran Hari Ini</p><p className="mt-0.5 text-[12px] text-[#7E8794]">Ringkasan data lapangan pada hari {day}.</p></div>
-        <div className="grid gap-3 sm:grid-cols-3">{marketingActivities.map(item=><button key={item.label} onClick={()=>navigate(item.to)} className="rounded-2xl border border-white/[.07] bg-[#111720] p-4 text-left hover:bg-[#151C25]"><span className="text-xs text-[#8E98A5]">{item.label}</span><strong className="font-data mt-2 block text-xl font-medium text-white" data-numeric="true">{item.value} <small className="font-sans text-xs font-medium text-[#7E8896]">{item.suffix}</small></strong></button>)}</div>
       </div>
 
       {/* Day picker */}
@@ -2192,8 +2188,12 @@ function JadwalFormPage({ id, back, showToast }: { id?:string; back:()=>void; sh
 
 // ── Profil ────────────────────────────────────────────────────────────────────
 
-function ProfilPage({ navigate, onLogout }: { navigate:(n:RouteName,p?:Record<string,unknown>)=>void; onLogout:()=>void }) {
+function ProfilPage({ day, navigate, onLogout }: { day:string; navigate:(n:RouteName,p?:Record<string,unknown>)=>void; onLogout:()=>void }) {
   const [showLogout, setShowLogout] = useState(false);
+  const recapRows = operationalRecaps.find(item=>item.day===day)?.rows ?? [];
+  const targetMasuk = recapRows.reduce((total,item)=>total+item.target.incoming,0);
+  const targetKeluar = recapRows.reduce((total,item)=>total+item.target.outgoing,0);
+  const sirkulasi = recapRows.reduce((total,item)=>total+item.currentCirculation,0);
   useEffect(() => {
     if (!showLogout) return;
     const close = (event: KeyboardEvent) => {
@@ -2229,6 +2229,9 @@ function ProfilPage({ navigate, onLogout }: { navigate:(n:RouteName,p?:Record<st
           <InfoRow label="Total Marketing" value="13 orang"/>
           <InfoRow label="Total Anggota" value="39 anggota"/>
           <InfoRow label="Total Target" value={fmtFull(TOTAL_TARGET)}/>
+          <InfoRow label="Target Masuk" value={fmtFull(targetMasuk)}/>
+          <InfoRow label="Target Keluar" value={fmtFull(targetKeluar)}/>
+          <InfoRow label="Sirkulasi" value={fmtFull(sirkulasi)}/>
           <InfoRow label="Total Drop" value={fmtFull(TOTAL_DROP)}/>
           <InfoRow label="Total Storting" value={fmtFull(TOTAL_STORTING)}/>
         </DCard>
@@ -2374,7 +2377,7 @@ export default function AdminApplication() {
       case "RiwayatDetail": return <RiwayatDetailPage id={String(p.id||"M01")} day={String(p.day||day)} back={back}/>;
       case "JadwalList": return <div className="px-4 pb-24 pt-5 sm:px-6 lg:px-8 lg:pb-8"><ScheduleListPage day={day} back={back}/></div>;
       case "JadwalForm": return <JadwalFormPage id={p.id?String(p.id):undefined} back={back} showToast={showToast}/>;
-      case "Profil": return <ProfilPage navigate={navigate} onLogout={()=>setLoggedIn(false)}/>;
+      case "Profil": return <ProfilPage day={day} navigate={navigate} onLogout={()=>setLoggedIn(false)}/>;
       case "UbahPassword": return <UbahPasswordPage back={back} showToast={showToast}/>;
       default: return <DashboardPage day={day} setDay={setDay} navigate={navigate}/>;
     }
