@@ -30,6 +30,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.font-data,
+time,
+[data-numeric="true"] {
+  font-family: "DM Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
 button,
 input,
 select,
@@ -48,6 +55,79 @@ button,
 button {
   transition-duration: 180ms;
   transition-timing-function: ease-out;
+}
+
+.ui-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  background: var(--surface-primary);
+}
+
+.ui-button-primary,
+.ui-button-secondary {
+  display: flex;
+  min-height: 48px;
+  min-width: 0;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.875rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.ui-button-primary {
+  border: 1px solid transparent;
+  background: var(--gold-primary);
+  color: var(--bg-primary);
+}
+
+.ui-button-primary:hover {
+  background: var(--gold-light);
+}
+
+.ui-button-secondary {
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-secondary);
+  color: var(--text-primary);
+}
+
+.ui-button-secondary:hover {
+  background: var(--surface-hover);
+}
+
+.ui-label {
+  color: var(--gold-label);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.ui-field {
+  min-height: 48px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.875rem;
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  font-size: 0.8125rem;
+  outline: none;
+  transition: border-color 180ms ease-out, box-shadow 180ms ease-out;
+}
+
+.ui-field::placeholder {
+  color: var(--text-muted);
+}
+
+.ui-field:focus {
+  border-color: rgba(212, 175, 55, 0.55);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
 }
 
 /* Keep legacy markup visually calm while the shared components use semantic weights. */

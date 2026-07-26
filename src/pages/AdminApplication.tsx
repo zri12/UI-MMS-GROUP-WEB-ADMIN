@@ -226,7 +226,7 @@ function Ava({ name, cls = "size-11 text-sm" }: { name: string; cls?: string }) 
 }
 
 function DCard({ children, cls = "" }: { children: React.ReactNode; cls?: string }) {
-  return <div className={`w-full min-w-0 max-w-full rounded-[16px] border border-white/[0.07] bg-[#111720] ${cls}`}>{children}</div>;
+  return <div className={`ui-card ${cls}`}>{children}</div>;
 }
 
 function GoldBtn({ children, onClick, cls = "", type = "button", disabled = false }: {
@@ -234,7 +234,7 @@ function GoldBtn({ children, onClick, cls = "", type = "button", disabled = fals
 }) {
   return (
     <button type={type} onClick={onClick} disabled={disabled}
-      className={`flex min-h-[44px] min-w-0 max-w-full items-center justify-center gap-2 rounded-[13px] bg-[#D4AF37] px-4 text-[13px] font-semibold text-[#080B10] transition hover:bg-[#E6C45A] active:scale-[.98] disabled:opacity-50 ${cls}`}>
+      className={`ui-button-primary transition active:scale-[.98] disabled:opacity-50 ${cls}`}>
       {children}
     </button>
   );
@@ -245,7 +245,7 @@ function GhostBtn({ children, onClick, cls = "", danger = false }: {
 }) {
   return (
     <button onClick={onClick}
-      className={`flex min-h-[44px] min-w-0 max-w-full items-center justify-center gap-2 rounded-[13px] px-4 text-[13px] font-semibold transition active:scale-[.98] ${danger?"bg-red-500/[0.08] text-red-400 hover:bg-red-500/[0.12]":"border border-white/[0.07] bg-[#1A222D] text-[#F3F5F7] hover:bg-[#1E2834]"} ${cls}`}>
+      className={`transition active:scale-[.98] ${danger?"flex min-h-12 min-w-0 max-w-full items-center justify-center gap-2 rounded-[14px] bg-red-500/[0.08] px-4 text-[13px] font-bold text-red-400 hover:bg-red-500/[0.12]":"ui-button-secondary"} ${cls}`}>
       {children}
     </button>
   );
@@ -357,9 +357,9 @@ function Inp({ label, type="text", ph, value, onChange, cls="" }: {
 }) {
   return (
     <label className={`block w-full min-w-0 max-w-full ${cls}`}>
-      <span className="text-[13px] font-medium text-[#A7AFBA]">{label}</span>
+      <span className="ui-label">{label}</span>
       <input type={type} placeholder={ph} value={value} onChange={e=>onChange?.(e.target.value)}
-        className="mt-1.5 min-h-11 w-full min-w-0 max-w-full rounded-[13px] border border-white/[0.07] bg-[#111720] px-3.5 py-2.5 text-[13px] text-[#F3F5F7] placeholder:text-[#747E8B] outline-none transition focus:border-[#D4AF37]/50 focus:ring-2 focus:ring-[#D4AF37]/10"/>
+        className="ui-field mt-1.5 px-3.5 py-2.5"/>
     </label>
   );
 }
@@ -367,9 +367,9 @@ function Inp({ label, type="text", ph, value, onChange, cls="" }: {
 function Sel({ label, opts, value, onChange }: { label:string; opts:string[]; value?:string; onChange?:(v:string)=>void }) {
   return (
     <label className="block w-full min-w-0 max-w-full">
-      <span className="text-[13px] font-medium text-[#A7AFBA]">{label}</span>
+      <span className="ui-label">{label}</span>
       <select value={value} onChange={e=>onChange?.(e.target.value)}
-        className="mt-1.5 min-h-11 w-full min-w-0 max-w-full rounded-[13px] border border-white/[0.07] bg-[#111720] px-3.5 py-2.5 text-[13px] text-[#F3F5F7] outline-none transition focus:border-[#D4AF37]/50 focus:ring-2 focus:ring-[#D4AF37]/10">
+        className="ui-field mt-1.5 px-3.5 py-2.5">
         {opts.map(o=><option key={o} value={o}>{o}</option>)}
       </select>
     </label>
@@ -508,7 +508,7 @@ function DashboardPage({ day, setDay, navigate }: { day: string; setDay: (d:stri
   }, [showDayMenu]);
 
   const summaryCards = [
-    { label:"Total Anggota", value:"39", sub:"nasabah/anggota", icon:Users, page:"RekapAnggota" as RouteName },
+    { label:"Total Anggota", value:"39", sub:"anggota aktif", icon:Users, page:"RekapAnggota" as RouteName },
     { label:"Total Target", value:"Rp123,5 jt", sub:"target nominal", icon:Target, page:"RekapTarget" as RouteName },
     { label:"Total Drop", value:"Rp91 jt", sub:"realisasi drop", icon:WalletCards, page:"RekapDrop" as RouteName },
     { label:"Total Storting", value:"Rp37,7 jt", sub:"realisasi storting", icon:CreditCard, page:"RekapStorting" as RouteName },
@@ -539,7 +539,7 @@ function DashboardPage({ day, setDay, navigate }: { day: string; setDay: (d:stri
             <button key={label} onClick={()=>navigate(page)}
             className="group min-h-[126px] w-full min-w-0 max-w-full overflow-hidden rounded-[16px] border border-white/[0.07] bg-[#111720] p-3.5 text-left transition hover:-translate-y-px hover:border-white/[0.12] hover:bg-[#151C25] active:scale-[.99] sm:min-h-[136px] sm:p-5">
               <div className="grid size-9 place-items-center rounded-xl bg-white/[0.04] text-[#A7AFBA] transition group-hover:text-[#E6C45A] sm:size-10"><Icon size={18}/></div>
-              <p className="mt-3 break-words text-[20px] font-semibold leading-tight text-[#F3F5F7] sm:text-[24px]">{value}</p>
+              <p className="font-data mt-3 break-words text-[20px] font-medium leading-tight text-[#F3F5F7] sm:text-[24px]" data-numeric="true">{value}</p>
               <p className="mt-1 text-[12px] font-medium text-[#A7AFBA]">{label}</p>
               <p className="mt-0.5 text-[11px] text-[#747E8B]">{sub}</p>
             </button>
@@ -549,7 +549,7 @@ function DashboardPage({ day, setDay, navigate }: { day: string; setDay: (d:stri
 
       <div className="mt-7 px-4 sm:px-6 lg:px-8">
         <div className="mb-3"><p className="text-[16px] font-semibold text-[#F3F5F7]">Aktivitas Pemasaran Hari Ini</p><p className="mt-0.5 text-[12px] text-[#7E8794]">Ringkasan data lapangan pada hari {day}.</p></div>
-        <div className="grid gap-3 sm:grid-cols-3">{marketingActivities.map(item=><button key={item.label} onClick={()=>navigate(item.to)} className="rounded-2xl border border-white/[.07] bg-[#111720] p-4 text-left hover:bg-[#151C25]"><span className="text-xs text-[#8E98A5]">{item.label}</span><strong className="mt-2 block text-xl text-white">{item.value} <small className="text-xs font-medium text-[#7E8896]">{item.suffix}</small></strong></button>)}</div>
+        <div className="grid gap-3 sm:grid-cols-3">{marketingActivities.map(item=><button key={item.label} onClick={()=>navigate(item.to)} className="rounded-2xl border border-white/[.07] bg-[#111720] p-4 text-left hover:bg-[#151C25]"><span className="text-xs text-[#8E98A5]">{item.label}</span><strong className="font-data mt-2 block text-xl font-medium text-white" data-numeric="true">{item.value} <small className="font-sans text-xs font-medium text-[#7E8896]">{item.suffix}</small></strong></button>)}</div>
       </div>
 
       {/* Day picker */}
@@ -649,7 +649,7 @@ function DashboardPage({ day, setDay, navigate }: { day: string; setDay: (d:stri
             <div className="mt-5 grid gap-3">
               {[
                 {label:"Tracking",desc:`Lokasi marketing · ${day}`,icon:MapPin,to:"TrackingMap" as RouteName,gold:true},
-                {label:"Data Anggota",desc:`Anggota/nasabah · ${day}`,icon:Users,to:"AnggotaList" as RouteName,gold:false},
+                {label:"Data Anggota",desc:`Anggota aktif · ${day}`,icon:Users,to:"AnggotaList" as RouteName,gold:false},
                 {label:"Laporan Operasional Harian",desc:`Laporan operasional · ${day}`,icon:FileText,to:"LaporanHarianList" as RouteName,gold:false},
                 {label:"Rekap Operasional",desc:`Ringkasan lengkap · ${day}`,icon:ClipboardList,to:"RekapOperasional" as RouteName,gold:false},
               ].map(({ label, desc, icon: Icon, to, gold }) => (
@@ -1377,7 +1377,7 @@ function RekapOperasionalPage({ day, back }: { day:string; back:()=>void }) {
 
 function RekapDetailPage({ type, back, navigate }: { type:"Anggota"|"Target"|"Drop"|"Storting"; back:()=>void; navigate:(n:RouteName,p?:Record<string,unknown>)=>void }) {
   const cfg = {
-    Anggota:{ title:"Detail Total Anggota", sub:"39 anggota/nasabah aktif", color:"text-emerald-400", total:"39 Anggota" },
+    Anggota:{ title:"Detail Total Anggota", sub:"39 anggota aktif", color:"text-emerald-400", total:"39 Anggota" },
     Target:{ title:"Detail Total Target", sub:fmtFull(TOTAL_TARGET), color:"text-[#D4AF37]", total:fmtFull(TOTAL_TARGET) },
     Drop:{ title:"Detail Total Drop", sub:fmtFull(TOTAL_DROP), color:"text-blue-400", total:fmtFull(TOTAL_DROP) },
     Storting:{ title:"Detail Total Storting", sub:fmtFull(TOTAL_STORTING), color:"text-purple-400", total:fmtFull(TOTAL_STORTING) },
@@ -2227,7 +2227,7 @@ function ProfilPage({ navigate, onLogout }: { navigate:(n:RouteName,p?:Record<st
         <DCard cls="p-4">
           <p className="text-[14px] font-extrabold text-[#F8FAFC] mb-3">Ringkasan Sistem</p>
           <InfoRow label="Total Marketing" value="13 orang"/>
-          <InfoRow label="Total Anggota" value="39 nasabah"/>
+          <InfoRow label="Total Anggota" value="39 anggota"/>
           <InfoRow label="Total Target" value={fmtFull(TOTAL_TARGET)}/>
           <InfoRow label="Total Drop" value={fmtFull(TOTAL_DROP)}/>
           <InfoRow label="Total Storting" value={fmtFull(TOTAL_STORTING)}/>

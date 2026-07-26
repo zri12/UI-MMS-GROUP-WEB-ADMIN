@@ -43,8 +43,8 @@ export function Sidebar({ current, open, navigate, onClose, onLogout }: {
 
   return <>
     {open&&<button onClick={onClose} aria-label="Tutup menu" className="fixed inset-0 z-[900] bg-black/75 backdrop-blur-[2px] lg:hidden"/>}
-    <aside className={`fixed inset-y-0 left-0 z-[1000] flex w-[82vw] max-w-[calc(100vw-48px)] flex-col overflow-x-hidden border-r border-white/[0.07] bg-[#090D12] shadow-[18px_0_48px_rgba(0,0,0,.3)] transition-transform duration-300 sm:max-w-[304px] lg:w-[272px] lg:max-w-none lg:translate-x-0 ${open?"translate-x-0":"-translate-x-full"}`}>
-      <div className="flex min-h-[84px] min-w-0 items-center gap-3 border-b border-white/[0.07] px-5"><LogoImage className="size-11 shrink-0"/><div className="min-w-0"><p className="truncate text-[14px] font-semibold tracking-[-.01em] text-[#F3F5F7]">KSP MMS</p><p className="mt-0.5 truncate text-[11px] text-[#747E8B]">Marketing Monitoring</p></div></div>
+    <aside className={`fixed inset-y-0 left-0 z-[1000] flex w-[82vw] max-w-[calc(100vw-48px)] flex-col overflow-x-hidden border-r border-[var(--border-subtle)] bg-[var(--sidebar)] shadow-[18px_0_48px_rgba(0,0,0,.3)] transition-transform duration-300 sm:max-w-[304px] lg:w-[272px] lg:max-w-none lg:translate-x-0 ${open?"translate-x-0":"-translate-x-full"}`}>
+      <div className="flex min-h-[84px] min-w-0 items-center gap-3 border-b border-[var(--border-subtle)] px-5"><LogoImage className="size-11 shrink-0"/><div className="min-w-0"><p className="truncate text-[14px] font-bold tracking-[-.01em] text-white">KSP MMS</p><p className="mt-0.5 truncate text-[11px] text-[var(--text-muted)]">Marketing Monitoring</p></div></div>
       <nav className="flex-1 space-y-5 overflow-y-auto overflow-x-hidden px-3 py-4">
         {groups.map(group=><div key={group.label}>
           <p className="mb-2 px-3 text-[10px] font-semibold tracking-[.12em] text-[#596472]">{group.label}</p>
@@ -53,7 +53,7 @@ export function Sidebar({ current, open, navigate, onClose, onLogout }: {
           </div>
         </div>)}
       </nav>
-      <div className="space-y-2 border-t border-white/[0.07] p-3">
+      <div className="space-y-2 border-t border-[var(--border-subtle)] p-3">
         <div className="rounded-2xl bg-white/[0.025] p-3.5 text-[12px] text-[#A7AFBA]">
           <p className="font-semibold text-[#F3F5F7]">Admin KSP</p>
           <p className="mt-0.5 text-[11px] text-[#747E8B]">Administrator</p>
