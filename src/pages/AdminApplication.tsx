@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { journeys } from "../data/journeys";
 import { prospects as prospectsData } from "../data/prospects";
 import { members as membersData } from "../data/members";
@@ -2309,6 +2309,22 @@ export default function AdminApplication() {
   const current = stack[stack.length - 1];
   const isMain = MAIN_PAGES.includes(current.name);
   const setDay = (value: string) => setSelectedDay(value as DayName);
+
+  useLayoutEffect(() => {
+    if (!loggedIn) return;
+
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
+    const scrollRoot = document.scrollingElement;
+    if (scrollRoot) {
+      scrollRoot.scrollTop = 0;
+      scrollRoot.scrollLeft = 0;
+    }
+
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [loggedIn, stack]);
+
   useEffect(() => {
     if (!loggedIn) return;
     const update = () => void refresh();
