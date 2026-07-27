@@ -3,7 +3,7 @@ import { ClipboardList, Home, MapPin, UserRound, Users } from "lucide-react";
 const tabs = [
   ["Dashboard", Home, "Dashboard"],
   ["MarketingList", Users, "Marketing"],
-  ["DailyHub", ClipboardList, "Harian"],
+  ["DailyHub", ClipboardList, "Rencana Kerja"],
   ["TrackingMap", MapPin, "Tracking"],
   ["Profil", UserRound, "Profil"],
 ] as const;

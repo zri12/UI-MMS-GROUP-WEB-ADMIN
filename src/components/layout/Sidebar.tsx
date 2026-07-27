@@ -5,7 +5,7 @@ import { LogoImage } from "../common/LogoImage";
 const groups = [
   { label:"Menu Utama", items:[
     ["Dashboard",Home,"Dashboard"],["MarketingList",Users,"Data Marketing"],
-    ["DailyHub",ClipboardList,"Data Harian"],["TrackingMap",MapPin,"Tracking Lokasi"],
+    ["DailyHub",ClipboardList,"Rencana Kerja"],["TrackingMap",MapPin,"Tracking Lokasi"],
   ]},
   { label:"Data Pemasaran", items:[
     ["ProspectList",NotebookTabs,"Data Prospek"],["AnggotaList",CreditCard,"Data Anggota"],

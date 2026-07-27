@@ -3,7 +3,7 @@ import { Menu } from "lucide-react";
 const pageTitles: Record<string, string> = {
   Dashboard: "Dashboard",
   MarketingList: "Data Marketing",
-  DailyHub: "Data Harian",
+  DailyHub: "Rencana Kerja",
   TrackingMap: "Tracking Lokasi",
   AnggotaList: "Data Anggota",
   ProspectList: "Data Prospek",
