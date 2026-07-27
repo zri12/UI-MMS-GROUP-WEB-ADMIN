@@ -1,4 +1,4 @@
-import { ArrowLeft, ChevronRight, MapPin, Search, UserRound } from "lucide-react";
+import { ArrowLeft, ChevronRight, MapPin, Search, UserRound, Printer, Share2 } from "lucide-react";
 import { useState } from "react";
 import { members } from "../data/members";
 import { getMarketingById, getMarketingName } from "../utils/dataRelations";
@@ -9,7 +9,14 @@ const dateText = (value: string) => new Intl.DateTimeFormat("id-ID",{day:"numeri
 const statusClass = (value: string) => value === "Disetujui" ? "bg-emerald-400/10 text-emerald-300" : value === "Ditolak" ? "bg-red-400/10 text-red-300" : "bg-amber-400/10 text-amber-300";
 
 function Header({title,subtitle,back}:{title:string;subtitle:string;back:()=>void}) {
-  return <div className="mb-5 flex items-center gap-3"><button onClick={back} aria-label="Kembali" className="grid size-11 shrink-0 place-items-center rounded-xl border border-white/[.08] bg-white/[.035] text-[#AAB2BE]"><ArrowLeft size={19}/></button><div><h1 className="text-xl font-semibold text-white sm:text-2xl">{title}</h1><p className="mt-0.5 text-xs text-[#7E8896]">{subtitle}</p></div></div>;
+  return <div className="mb-5 flex items-center gap-3">
+    <button onClick={back} aria-label="Kembali" className="grid size-11 shrink-0 place-items-center rounded-xl border border-white/[.08] bg-white/[.035] text-[#AAB2BE] print:hidden"><ArrowLeft size={19}/></button>
+    <div className="min-w-0 flex-1"><h1 className="text-xl font-semibold text-white sm:text-2xl">{title}</h1><p className="mt-0.5 text-xs text-[#7E8896]">{subtitle}</p></div>
+    <div className="flex items-center gap-1.5 shrink-0 print:hidden">
+      <button onClick={() => window.print()} className="grid size-9 place-items-center rounded-xl border border-white/[.08] bg-white/[.035] text-[#AAB2BE] hover:bg-white/10 hover:text-white transition" title="Cetak"><Printer size={16}/></button>
+      <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`Data Anggota\n${title}`)}`, '_blank')} className="grid size-9 place-items-center rounded-xl border border-white/[.08] bg-white/[.035] text-[#AAB2BE] hover:bg-[#25D366]/20 hover:text-[#25D366] transition" title="Share WA"><Share2 size={16}/></button>
+    </div>
+  </div>;
 }
 function Section({title,children}:{title:string;children:React.ReactNode}) {
   return <section className="rounded-2xl border border-white/[.07] bg-[#0D131A] p-4 sm:p-5"><h2 className="mb-4 text-sm font-semibold text-[#E8C65A]">{title}</h2><div className="grid gap-4 sm:grid-cols-2">{children}</div></section>;

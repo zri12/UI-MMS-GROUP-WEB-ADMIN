@@ -1,4 +1,4 @@
-import { ArrowLeft, ChevronRight, FileText, Search } from "lucide-react";
+import { ArrowLeft, ChevronRight, FileText, Search, Printer, Share2 } from "lucide-react";
 import { useState } from "react";
 import { dailyReports } from "../data/dailyReports";
 import { operationalRecaps } from "../data/operationalRecaps";
@@ -13,7 +13,14 @@ const circulationFor = (day: string, marketingId: string) => operationalRecaps
   .find(row => row.marketingId === marketingId)?.currentCirculation ?? 0;
 
 function Header({ title, subtitle, back }: { title: string; subtitle: string; back: () => void }) {
-  return <div className="mb-5 flex items-center gap-3"><button onClick={back} aria-label="Kembali" className="grid size-11 shrink-0 place-items-center rounded-xl border border-white/[.08] bg-white/[.035] text-[#AAB2BE] hover:text-white"><ArrowLeft size={19}/></button><div><h1 className="text-xl font-semibold text-white sm:text-2xl">{title}</h1><p className="mt-0.5 text-xs text-[#7E8896]">{subtitle}</p></div></div>;
+  return <div className="mb-5 flex items-center gap-3">
+    <button onClick={back} aria-label="Kembali" className="grid size-11 shrink-0 place-items-center rounded-xl border border-white/[.08] bg-white/[.035] text-[#AAB2BE] hover:text-white print:hidden"><ArrowLeft size={19}/></button>
+    <div className="min-w-0 flex-1"><h1 className="text-xl font-semibold text-white sm:text-2xl">{title}</h1><p className="mt-0.5 text-xs text-[#7E8896]">{subtitle}</p></div>
+    <div className="flex items-center gap-1.5 shrink-0 print:hidden">
+      <button onClick={() => window.print()} className="grid size-9 place-items-center rounded-xl border border-white/[.08] bg-white/[.035] text-[#AAB2BE] hover:bg-white/10 hover:text-white transition" title="Cetak"><Printer size={16}/></button>
+      <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`Laporan Harian\n${title}`)}`, '_blank')} className="grid size-9 place-items-center rounded-xl border border-white/[.08] bg-white/[.035] text-[#AAB2BE] hover:bg-[#25D366]/20 hover:text-[#25D366] transition" title="Share WA"><Share2 size={16}/></button>
+    </div>
+  </div>;
 }
 function Field({ label, value, wide = false }: { label: string; value: React.ReactNode; wide?: boolean }) {
   return <div className={wide ? "sm:col-span-2" : ""}><p className="text-[10px] font-semibold uppercase tracking-[.08em] text-[#687483]">{label}</p><div className="mt-1.5 text-sm text-[#E5E9ED]">{value}</div></div>;

@@ -575,20 +575,14 @@ function DashboardPage({ day, setDay, navigate }: { day: string; setDay: (d:stri
         </div>
         <div className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4">
           {dailyShortcuts.map(({label,hint,icon:Icon,to})=>(
-            <div key={label} onClick={()=>navigate(to)}
-              className="group flex min-h-[88px] w-full min-w-0 max-w-full items-center justify-between gap-2 overflow-hidden rounded-[16px] border border-white/[0.07] bg-[#111720] p-3 text-left cursor-pointer transition hover:bg-[#1A222D] active:scale-[.985] sm:p-3.5">
-              <div className="flex items-center gap-3 min-w-0">
-                <span className="grid size-9 shrink-0 place-items-center rounded-[12px] bg-[#D4AF37]/[0.1] text-[#D4AF37] sm:size-10"><Icon size={18}/></span>
-                <span className="min-w-0">
-                  <span className="block text-[13px] font-semibold leading-tight text-[#F3F5F7]">{label}</span>
-                  <span className="mt-1 block text-[10.5px] leading-tight text-[#7E8794]">{hint}</span>
-                </span>
-              </div>
-              <div className="flex flex-col gap-1.5 shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">
-                 <button onClick={(e) => { e.stopPropagation(); window.print(); }} className="grid size-7 place-items-center rounded-lg bg-white/5 text-[#A7AFBA] hover:bg-white/15 hover:text-white transition" title="Cetak"><Printer size={13}/></button>
-                 <button onClick={(e) => { e.stopPropagation(); window.open(`https://wa.me/?text=Akses ${label}`, '_blank'); }} className="grid size-7 place-items-center rounded-lg bg-white/5 text-[#A7AFBA] hover:bg-[#25D366]/20 hover:text-[#25D366] transition" title="Share WA"><Share2 size={13}/></button>
-              </div>
-            </div>
+            <button key={label} onClick={()=>navigate(to)}
+              className="group flex min-h-[88px] w-full min-w-0 max-w-full items-center gap-3 overflow-hidden rounded-[16px] border border-white/[0.07] bg-[#111720] p-3 text-left transition hover:bg-[#1A222D] active:scale-[.985] sm:p-3.5">
+              <span className="grid size-9 shrink-0 place-items-center rounded-[12px] bg-[#D4AF37]/[0.1] text-[#D4AF37] sm:size-10"><Icon size={18}/></span>
+              <span className="min-w-0">
+                <span className="block text-[13px] font-semibold leading-tight text-[#F3F5F7]">{label}</span>
+                <span className="mt-1 block text-[10.5px] leading-tight text-[#7E8794]">{hint}</span>
+              </span>
+            </button>
           ))}
         </div>
       </div>
@@ -792,17 +786,10 @@ function RekapMiniTable() {
     <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
       {MARKETERS.slice(0,5).map(m => {
         const pct=75;
-        const textShare = encodeURIComponent(`Rekap Target Harian\nMarketing: ${m.name} (${m.code})\nTarget: ${fmtJt(m.target*1_000_000)}\nDrop: ${fmtJt(m.drop*1_000_000)}\nStorting: ${fmtJt(m.storting*1_000_000)}`);
-        return <DCard key={m.code} cls="p-4 relative group">
-          <div className="flex items-start justify-between gap-3">
+        return <DCard key={m.code} cls="p-4">
+          <div className="flex items-center justify-between gap-3">
             <div><p className="text-[14px] font-extrabold text-[#F8FAFC]">{m.name}</p><p className="text-[11px] font-bold text-[#D4AF37]">{m.code}</p></div>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
-                 <button onClick={() => window.print()} className="grid size-6 place-items-center rounded bg-white/5 text-[#A7AFBA] hover:bg-white/15 hover:text-white transition" title="Cetak"><Printer size={12}/></button>
-                 <button onClick={() => window.open(`https://wa.me/?text=${textShare}`, '_blank')} className="grid size-6 place-items-center rounded bg-white/5 text-[#A7AFBA] hover:bg-[#25D366]/20 hover:text-[#25D366] transition" title="Share WA"><Share2 size={12}/></button>
-              </div>
-              <span className="text-[12px] font-extrabold text-emerald-400">{pct}%</span>
-            </div>
+            <span className="text-[12px] font-extrabold text-emerald-400">{pct}%</span>
           </div>
           <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-[#D4AF37]" style={{width:`${pct}%`}}/></div>
           <div className="mt-3 grid grid-cols-2 gap-2 text-[11px]">
@@ -1392,9 +1379,16 @@ function RekapDetailPage({ type, back, navigate }: { type:"Anggota"|"Target"|"Dr
     Storting:{ title:"Detail Total Storting", sub:fmtFull(TOTAL_STORTING), color:"text-purple-400", total:fmtFull(TOTAL_STORTING) },
   };
   const c = cfg[type];
+  const shareText = encodeURIComponent(`Rekap ${type} Harian\nTotal: ${c.total}`);
   return (
     <div className="pb-4">
-      <PageHdr title="Rekap Operasional Keseluruhan" sub={`Ringkasan total seluruh marketing · ${type}`} onBack={back}/>
+      <PageHdr title="Rekap Operasional Keseluruhan" sub={`Ringkasan total seluruh marketing · ${type}`} onBack={back}
+        action={
+          <div className="flex items-center gap-1.5 print:hidden">
+            <button onClick={() => window.print()} className="grid size-9 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.035] text-[#AAB2BE] hover:bg-white/10 hover:text-white transition" title="Cetak"><Printer size={16}/></button>
+            <button onClick={() => window.open(`https://wa.me/?text=${shareText}`, '_blank')} className="grid size-9 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.035] text-[#AAB2BE] hover:bg-[#25D366]/20 hover:text-[#25D366] transition" title="Share WA"><Share2 size={16}/></button>
+          </div>
+        }/>
       <div className="px-4 py-4 lg:px-8">
         <DCard cls="mb-4 p-5 flex items-center justify-between">
           <div><p className="text-[13px] text-[#7E8794]">Total Keseluruhan</p><p className={`mt-1 text-[24px] font-extrabold ${c.color}`}>{c.total}</p></div>
